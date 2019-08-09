@@ -24,6 +24,8 @@ class ToDoContainer extends Component {
     this.setState({ searchText: searchText });
   };
 
+  //TODO: needs to rerender on add or delete task!
+
   addTask = task => {
     firestore
       .collection("users")
@@ -32,17 +34,17 @@ class ToDoContainer extends Component {
         currentTasks: firebase.firestore.FieldValue.arrayUnion(task)
       });
     console.log("new task added");
+    this.setState({ searchText: "" });
   };
 
   deleteTask = task => {
     const userRef = firestore.collection("users").doc("new user!");
-    const removeTask = userRef.update({
+    userRef.update({
       currentTasks: firebase.firestore.FieldValue.delete()
     });
   };
 
   toggleCompletedVisiblity = () => {
-    console.log("triggering completed tasks visibility");
     this.setState({ completedTasksVisible: !this.state.completedTasksVisible });
   };
 
@@ -75,13 +77,13 @@ class ToDoContainer extends Component {
           {this.state.completedTasksVisible ? (
             <React.Fragment>
               <section>
+                <button onClick={this.toggleCompletedVisiblity}>
+                  Hide Completed Tasks
+                </button>
                 <h2>Completed Tasks</h2>
                 {/* {console.log(this.state.userData.completedTasks)} */}
                 <TaskList list={this.state.userData.completedTasks} />
               </section>
-              <button onClick={this.toggleCompletedVisiblity}>
-                Hide Completed Tasks
-              </button>
             </React.Fragment>
           ) : (
             <button onClick={this.toggleCompletedVisiblity}>
