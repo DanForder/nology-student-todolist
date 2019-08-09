@@ -14,7 +14,7 @@ class ToDoContainer extends Component {
         const userData = querySnapshot.docs.map(data => {
           return { ...data.data(), docId: data.id };
         });
-        this.setState({ userData: userData[0] });
+        this.setState({ userData: userData[1] });
       });
   }
 
@@ -32,6 +32,13 @@ class ToDoContainer extends Component {
         currentTasks: firebase.firestore.FieldValue.arrayUnion(task)
       });
     console.log("new task added");
+  };
+
+  deleteTask = task => {
+    const userRef = firestore.collection("users").doc("new user!");
+    const removeTask = userRef.update({
+      currentTasks: firebase.firestore.FieldValue.delete()
+    });
   };
 
   toggleCompletedVisiblity = () => {
@@ -56,6 +63,9 @@ class ToDoContainer extends Component {
               Add Task
             </button>
           </section>
+          <button onClick={() => this.deleteTask("Get Milk")}>
+            Delete All Ongoing Tasks!
+          </button>
           <section>
             <h2>Ongoing Tasks</h2>
             {/* {console.log(this.state.userData.currentTasks)} */}
