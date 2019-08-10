@@ -4,7 +4,12 @@ import TaskList from "../../components/TaskList/TaskList";
 import InputBox from "../../components/InputBox/InputBox";
 
 class ToDoContainer extends Component {
-  state = { userData: [], completedTasksVisible: true, searchText: "" };
+  state = {
+    userData: [],
+    completedTasksVisible: true,
+    currentTasksVisible: true,
+    addTaskText: ""
+  };
 
   fetchData() {
     firestore
@@ -22,10 +27,10 @@ class ToDoContainer extends Component {
     this.fetchData();
   }
 
-  setSearchText = event => {
-    const searchText = event.target.value;
-    console.log(searchText);
-    this.setState({ searchText: searchText });
+  setTaskAddText = event => {
+    const addTaskText = event.target.value;
+    // console.log(addTaskText);
+    this.setState({ addTaskText });
   };
 
   //TODO: needs to rerender on add or delete task!
@@ -41,12 +46,17 @@ class ToDoContainer extends Component {
     console.log(`task "${task}" added`);
     this.fetchData();
 
-    this.setState({ searchText: "" });
+    this.setState({ addTaskText: "" });
   };
 
-  editTask = task => {
+  confirmEditTask = (task, updatedTask) => {
+    //delete current task from array
+    this.deleteTask(task, "currentTasks");
+    //add updated task to array
+    this.addTask(updatedTask);
     this.fetchData();
-    console.log("editing task " + task);
+
+    console.log(`editing task ${task} with ${updatedTask} `);
   };
 
   archiveTask = task => {
@@ -62,13 +72,33 @@ class ToDoContainer extends Component {
     this.fetchData();
   };
 
-  deleteTask = task => {
+  unarchiveTask = task => {
     firestore
       .collection("users")
       .doc("new user!")
       .update({
+        currentTasks: firebase.firestore.FieldValue.arrayUnion(task),
         completedTasks: firebase.firestore.FieldValue.arrayRemove(task)
       });
+
+    console.log(`task "${task}" unarchived`);
+    this.fetchData();
+  };
+
+  deleteTask = (task, status) => {
+    status === "currentTasks"
+      ? firestore
+          .collection("users")
+          .doc("new user!")
+          .update({
+            currentTasks: firebase.firestore.FieldValue.arrayRemove(task)
+          })
+      : firestore
+          .collection("users")
+          .doc("new user!")
+          .update({
+            completedTasks: firebase.firestore.FieldValue.arrayRemove(task)
+          });
 
     console.log(`task "${task}" deleted`);
     this.fetchData();
@@ -76,6 +106,10 @@ class ToDoContainer extends Component {
 
   toggleCompletedVisiblity = () => {
     this.setState({ completedTasksVisible: !this.state.completedTasksVisible });
+  };
+
+  toggleCurrentVisibility = () => {
+    this.setState({ currentTasksVisible: !this.state.currentTasksVisible });
   };
 
   render() {
@@ -88,21 +122,32 @@ class ToDoContainer extends Component {
           <section>
             <h2>Add A Task!</h2>
             <InputBox
-              searchText={this.state.searchText}
-              setSearchText={this.setSearchText}
+              addTaskText={this.state.addTaskText}
+              setAddTaskText={this.setTaskAddText}
             />
-            <button onClick={() => this.addTask(this.state.searchText)}>
+            <button onClick={() => this.addTask(this.state.addTaskText)}>
               Add Task
             </button>
           </section>
-          <section>
-            <h2>Ongoing Tasks</h2>
-            <TaskList
-              list={this.state.userData.currentTasks}
-              archiveTask={this.archiveTask}
-              editTask={this.editTask}
-            />
-          </section>
+          {this.state.currentTasksVisible ? (
+            <section>
+              <button onClick={this.toggleCurrentVisibility}>
+                Hide Current Tasks
+              </button>
+              <h2>Current Tasks</h2>
+              <TaskList
+                list={this.state.userData.currentTasks}
+                archiveTask={this.archiveTask}
+                deleteTask={this.deleteTask}
+                confirmEditTask={this.confirmEditTask}
+              />
+            </section>
+          ) : (
+            <button onClick={this.toggleCurrentVisibility}>
+              Show Current Tasks
+            </button>
+          )}
+
           {/* {show or hide completed tasks} */}
           {this.state.completedTasksVisible ? (
             <React.Fragment>
@@ -113,8 +158,9 @@ class ToDoContainer extends Component {
                 <h2>Completed Tasks</h2>
                 <TaskList
                   list={this.state.userData.completedTasks}
+                  unarchiveTask={this.unarchiveTask}
                   deleteTask={this.deleteTask}
-                  editTask={this.editTask}
+                  confirmEditTask={this.confirmEditTask}
                 />
               </section>
             </React.Fragment>
