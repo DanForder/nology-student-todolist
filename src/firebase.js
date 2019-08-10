@@ -1,6 +1,7 @@
 import * as firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/storage";
+import "firebase/auth";
 // import "firebase/auth";
 
 // Basic firebase configuration linking web application to database - see firebase documentation
@@ -17,6 +18,12 @@ const firebaseConfig = {
 
 // Initialising firebase
 firebase.initializeApp(firebaseConfig);
+
+// Exporting connection to provider for google signin
+export const provider = new firebase.auth.GoogleAuthProvider();
+provider.setCustomParameters({
+  login_hint: "user@example.com"
+});
 
 // Exporting connection to database as a variable
 export const firestore = firebase.firestore();
