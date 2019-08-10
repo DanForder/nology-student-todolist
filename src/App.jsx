@@ -3,13 +3,12 @@ import "./App.scss";
 import ToDoContainer from "./containers/ToDoContainer/ToDoContainer";
 import firebase, { provider, firestore } from "./firebase";
 
+//"This domain (todolist.dforder.com) is not authorized to run this operation. Add it to the OAuth redirect domains list in the Firebase console -> Auth section -> Sign in method tab."
+
 class App extends Component {
   state = {
     user: null
   };
-
-  //ya29.GltgB-3CK86bw3zp_FaHI2vWDUtp-mljYqscTSVFLY8HNBaA6e6KdMfzGW960dxxji_HH6QQHO4IqZ7DHbnp53aPX25PYrRt9JloAZ9oYUhLRiuGWNc1-Bzytk2r
-  //ya29.GltgB1nTCtK3P2N884o2eJL_a2K6eMCMJvkY1jQbAJesa17uuOzfSApqAJFYMadQ_ZJSAliuEzdnOJEoCCmMVWWVzGyzGs5qDevzRgV9dCmGW3E3vSH9ZzurARqn
 
   signIn = () => {
     firebase
@@ -17,15 +16,15 @@ class App extends Component {
       .signInWithPopup(provider)
       .then(result => {
         // This gives you a Google Access Token. You can use it to access the Google API.
-        var token = result.credential.accessToken;
+        // var token = result.credential.accessToken;
+
         // The signed-in user info.
         var user = result.user;
-        // ...
         this.setState({
           user
         });
-        // console.log(this.state.user.uid);
-        this.createUserDatabase(user.uid);
+        //if one doesn't exist, create new collection with unique user ID
+        this.createUserCollection(user.uid);
       })
       .catch(error => {
         // An error happened.
@@ -33,7 +32,8 @@ class App extends Component {
       });
   };
 
-  createUserDatabase = userToken => {
+  //TODO: pass down userToken reference to database as props
+  createUserCollection = userToken => {
     firestore
       .collection("users")
       .doc(userToken)
@@ -46,15 +46,23 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <header>
-          <h1 onClick={() => this.setState({ user: "hello" })}>
-            Oh What... To Do?
-          </h1>
+        <h1 onClick={() => this.setState({ user: "hello" })}>
+          Oh What... To Do?
+        </h1>
+
+        {/* {check user is logged in and show appropriate display} */}
+        {this.state.user ? (
+          <ToDoContainer user={this.state.user} />
+        ) : (
           <div>
+            <p>
+              We offer a contemporary solutions to age-old problems with our
+              state-of-the-art personal neural network management system. Sign
+              up for "Oh What... To Do?" now!
+            </p>
             <button onClick={this.signIn}>Sign In With Google</button>
           </div>
-        </header>
-        <ToDoContainer user={this.state.user} />
+        )}
       </div>
     );
   }

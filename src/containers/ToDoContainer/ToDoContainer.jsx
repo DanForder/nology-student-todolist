@@ -13,13 +13,13 @@ class ToDoContainer extends Component {
 
   fetchData() {
     firestore
-      .collection("users")
+      .collection("test user")
       .get()
       .then(querySnapshot => {
         const userData = querySnapshot.docs.map(data => {
           return { ...data.data(), docId: data.id };
         });
-        this.setState({ userData: userData[1] });
+        this.setState({ userData: userData[0] });
       });
   }
 
@@ -37,7 +37,7 @@ class ToDoContainer extends Component {
 
   addTask = task => {
     firestore
-      .collection("users")
+      .collection("test user")
       .doc("new user!")
       .update({
         currentTasks: firebase.firestore.FieldValue.arrayUnion(task)
@@ -61,7 +61,7 @@ class ToDoContainer extends Component {
 
   archiveTask = task => {
     firestore
-      .collection("users")
+      .collection("test user")
       .doc("new user!")
       .update({
         currentTasks: firebase.firestore.FieldValue.arrayRemove(task),
@@ -74,7 +74,7 @@ class ToDoContainer extends Component {
 
   unarchiveTask = task => {
     firestore
-      .collection("users")
+      .collection("test user")
       .doc("new user!")
       .update({
         currentTasks: firebase.firestore.FieldValue.arrayUnion(task),
@@ -88,13 +88,13 @@ class ToDoContainer extends Component {
   deleteTask = (task, status) => {
     status === "currentTasks"
       ? firestore
-          .collection("users")
+          .collection("test user")
           .doc("new user!")
           .update({
             currentTasks: firebase.firestore.FieldValue.arrayRemove(task)
           })
       : firestore
-          .collection("users")
+          .collection("test user")
           .doc("new user!")
           .update({
             completedTasks: firebase.firestore.FieldValue.arrayRemove(task)
