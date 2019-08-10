@@ -115,9 +115,6 @@ class ToDoContainer extends Component {
   render() {
     return (
       <div>
-        <header>
-          <h1>Oh What... To Do?</h1>
-        </header>
         <main>
           <section>
             <h2>Add A Task!</h2>
