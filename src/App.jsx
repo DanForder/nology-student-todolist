@@ -24,7 +24,7 @@ class App extends Component {
           user
         });
         //if one doesn't exist, create new collection with unique user ID
-        this.createUserCollection(user.uid);
+        this.checkForUserCollection(user.uid);
       })
       .catch(error => {
         // An error happened.
@@ -33,15 +33,31 @@ class App extends Component {
   };
 
   //TODO: pass down userToken reference to database as props
-  createUserCollection = userToken => {
+  checkForUserCollection = userToken => {
     firestore
       .collection("users")
       .doc(userToken)
-      .set({
-        test: "hello",
-        test2: "hello again!"
+      .get()
+      .then(querySnapshot => {
+        if (!querySnapshot.data()) {
+          console.log("user data doesn't exist yet");
+          console.log("making user collection in database");
+          this.createUserCollection(userToken);
+        } else {
+          console.log("user data exists already");
+        }
+      })
+      .catch(function(error) {
+        console.log("Error getting document:", error);
       });
   };
+
+  createUserCollection(userToken) {
+    firestore
+      .collection("users")
+      .doc(userToken)
+      .set({ currentTasks: [], completedTasks: [] });
+  }
 
   render() {
     return (
