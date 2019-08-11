@@ -120,7 +120,7 @@ class ToDoContainer extends Component {
     this.fetchData();
   };
 
-  toggleCompletedVisiblity = () => {
+  toggleCompletedVisibility = () => {
     this.setState({ completedTasksVisible: !this.state.completedTasksVisible });
   };
 
@@ -165,7 +165,7 @@ class ToDoContainer extends Component {
           {this.state.completedTasksVisible ? (
             <React.Fragment>
               <section>
-                <button onClick={this.toggleCompletedVisiblity}>
+                <button onClick={this.toggleCompletedVisibility}>
                   Hide Completed Tasks
                 </button>
                 <h2>Completed Tasks</h2>
@@ -178,7 +178,7 @@ class ToDoContainer extends Component {
               </section>
             </React.Fragment>
           ) : (
-            <button onClick={this.toggleCompletedVisiblity}>
+            <button onClick={this.toggleCompletedVisibility}>
               Show Completed Tasks
             </button>
           )}
