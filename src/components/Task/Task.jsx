@@ -1,4 +1,11 @@
 import React, { Component } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faTrashAlt,
+  faCheckCircle,
+  faTimesCircle,
+  faPencilAlt
+} from "@fortawesome/free-solid-svg-icons";
 
 class Task extends Component {
   state = { editable: false, editValue: "" };
@@ -14,8 +21,8 @@ class Task extends Component {
   };
 
   toggleEdit = task => {
-    // console.log(task);
-    // console.log(this.state.editValue);
+    //console.log(task);
+    //console.log(this.state.editValue);
     //if edit value is equal to task, do nothing except toggle editable
     //otherwise call a method on container to update firestore to new value
 
@@ -47,30 +54,30 @@ class Task extends Component {
         {this.props.archiveTask ? (
           <React.Fragment>
             <button onClick={() => this.toggleEdit(this.props.task)}>
-              Edit
+              <FontAwesomeIcon icon={faPencilAlt} />
             </button>
             <button onClick={() => this.props.archiveTask(this.props.task)}>
-              Archive Task
+              <FontAwesomeIcon icon={faCheckCircle} />
             </button>
             <button
               onClick={() =>
                 this.props.deleteTask(this.props.task, "currentTasks")
               }
             >
-              Delete Task
+              <FontAwesomeIcon icon={faTrashAlt} />
             </button>
           </React.Fragment>
         ) : (
           <React.Fragment>
             <button onClick={() => this.props.unarchiveTask(this.props.task)}>
-              Unarchive Task
+              <FontAwesomeIcon icon={faTimesCircle} />
             </button>
             <button
               onClick={() =>
                 this.props.deleteTask(this.props.task, "completedTasks")
               }
             >
-              Delete Task
+              <FontAwesomeIcon icon={faTrashAlt} />
             </button>
           </React.Fragment>
         )}

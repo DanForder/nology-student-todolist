@@ -61,16 +61,14 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <h1 onClick={() => this.setState({ user: "hello" })}>
-          Oh What... To Do?
-        </h1>
+      <div className="app">
+        <h1>Oh What... To Do?</h1>
 
         {/* {check user is logged in and show appropriate display} */}
         {this.state.user ? (
           <ToDoContainer user={this.state.user} />
         ) : (
-          <div>
+          <div className="description">
             <p>
               We offer a contemporary solutions to age-old problems with our
               state-of-the-art personal neural network management system. Sign

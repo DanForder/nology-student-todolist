@@ -142,46 +142,48 @@ class ToDoContainer extends Component {
               Add Task
             </button>
           </section>
-          {this.state.currentTasksVisible ? (
-            <section>
-              <button onClick={this.toggleCurrentVisibility}>
-                Hide Current Tasks
-              </button>
-              <h2>Current Tasks</h2>
-              <TaskList
-                list={this.state.userData.currentTasks}
-                archiveTask={this.archiveTask}
-                deleteTask={this.deleteTask}
-                confirmEditTask={this.confirmEditTask}
-              />
-            </section>
-          ) : (
-            <button onClick={this.toggleCurrentVisibility}>
-              Show Current Tasks
-            </button>
-          )}
-
-          {/* {show or hide completed tasks} */}
-          {this.state.completedTasksVisible ? (
-            <React.Fragment>
+          <div>
+            {this.state.currentTasksVisible ? (
               <section>
-                <button onClick={this.toggleCompletedVisibility}>
-                  Hide Completed Tasks
+                <button onClick={this.toggleCurrentVisibility}>
+                  Hide Current Tasks
                 </button>
-                <h2>Completed Tasks</h2>
+                <h2>Current Tasks</h2>
                 <TaskList
-                  list={this.state.userData.completedTasks}
-                  unarchiveTask={this.unarchiveTask}
+                  list={this.state.userData.currentTasks}
+                  archiveTask={this.archiveTask}
                   deleteTask={this.deleteTask}
                   confirmEditTask={this.confirmEditTask}
                 />
               </section>
-            </React.Fragment>
-          ) : (
-            <button onClick={this.toggleCompletedVisibility}>
-              Show Completed Tasks
-            </button>
-          )}
+            ) : (
+              <button onClick={this.toggleCurrentVisibility}>
+                Show Current Tasks
+              </button>
+            )}
+
+            {/* {show or hide completed tasks} */}
+            {this.state.completedTasksVisible ? (
+              <React.Fragment>
+                <section>
+                  <button onClick={this.toggleCompletedVisibility}>
+                    Hide Completed Tasks
+                  </button>
+                  <h2>Completed Tasks</h2>
+                  <TaskList
+                    list={this.state.userData.completedTasks}
+                    unarchiveTask={this.unarchiveTask}
+                    deleteTask={this.deleteTask}
+                    confirmEditTask={this.confirmEditTask}
+                  />
+                </section>
+              </React.Fragment>
+            ) : (
+              <button onClick={this.toggleCompletedVisibility}>
+                Show Completed Tasks
+              </button>
+            )}
+          </div>
         </main>
       </div>
     );
