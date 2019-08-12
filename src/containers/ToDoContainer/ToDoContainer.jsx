@@ -62,6 +62,14 @@ class ToDoContainer extends Component {
     console.log(`task "${task}" added`);
     this.fetchData();
 
+    // console.log(this.state.userData.currentTasks.push(task));
+    // this.setState({
+    //   userData: {
+    //     completedTasks: this.state.userData.completedTasks,
+    //     currentTasks: this.state.userData.currentTasks.push(task)
+    //   }
+    // });
+
     this.setState({ addTaskText: "" });
   };
 

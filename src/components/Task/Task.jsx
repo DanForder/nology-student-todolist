@@ -37,7 +37,7 @@ class Task extends Component {
           onChange={this.setEditText}
           placeholder={this.state.editValue}
           value={this.state.editValue}
-          type="type"
+          type="text"
         />
         <button
           onClick={() => {
