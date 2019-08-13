@@ -35,8 +35,11 @@ class ToDoContainer extends Component {
   }
 
   componentDidMount() {
+    this.setState({
+      userData: { completedTasks: [], currentTasks: [] },
+      userID: this.props.user.uid
+    });
     this.fetchData();
-    this.setState({ userID: this.props.user.uid });
   }
 
   setTaskAddText = event => {
