@@ -32,10 +32,6 @@ class ToDoContainer extends Component {
       .catch(function(error) {
         console.log("Error getting document:", error);
       });
-
-    // firestore
-    //   .collection("users")
-    //   .get()
   }
 
   componentDidMount() {
@@ -45,11 +41,8 @@ class ToDoContainer extends Component {
 
   setTaskAddText = event => {
     const addTaskText = event.target.value;
-    // console.log(addTaskText);
     this.setState({ addTaskText });
   };
-
-  //TODO: needs to rerender on add or delete task!
 
   addTask = task => {
     firestore
@@ -60,15 +53,10 @@ class ToDoContainer extends Component {
       });
 
     console.log(`task "${task}" added`);
-    this.fetchData();
+    this.state.userData.currentTasks.push(task);
 
-    // console.log(this.state.userData.currentTasks.push(task));
-    // this.setState({
-    //   userData: {
-    //     completedTasks: this.state.userData.completedTasks,
-    //     currentTasks: this.state.userData.currentTasks.push(task)
-    //   }
-    // });
+    //legacy fetch data call
+    // this.fetchData();
 
     this.setState({ addTaskText: "" });
   };
@@ -78,7 +66,6 @@ class ToDoContainer extends Component {
     this.deleteTask(task, "currentTasks");
     //add updated task to array
     this.addTask(updatedTask);
-    this.fetchData();
 
     console.log(`editing task ${task} with ${updatedTask} `);
   };
@@ -93,7 +80,16 @@ class ToDoContainer extends Component {
       });
 
     console.log(`task "${task}" archived`);
-    this.fetchData();
+
+    this.state.userData.currentTasks.splice(
+      this.state.userData.currentTasks.indexOf(task),
+      1
+    );
+    this.state.userData.completedTasks.push(task);
+    this.forceUpdate();
+
+    //legacy fetch data call
+    // this.fetchData();
   };
 
   unarchiveTask = task => {
@@ -106,10 +102,24 @@ class ToDoContainer extends Component {
       });
 
     console.log(`task "${task}" unarchived`);
-    this.fetchData();
+
+    this.state.userData.completedTasks.splice(
+      this.state.userData.completedTasks.indexOf(task),
+      1
+    );
+    this.state.userData.currentTasks.push(task);
+    this.forceUpdate();
+
+    //legacy fetch data call
+    // this.fetchData();
   };
 
   deleteTask = (task, status) => {
+    //
+    //
+    //TODO: working with local delete changes
+    //
+    //
     status === "currentTasks"
       ? firestore
           .collection("users")
@@ -125,6 +135,7 @@ class ToDoContainer extends Component {
           });
 
     console.log(`task "${task}" deleted`);
+
     this.fetchData();
   };
 

@@ -70,9 +70,9 @@ class App extends Component {
         ) : (
           <div className="description">
             <p>
-              We offer a contemporary solutions to age-old problems with our
-              state-of-the-art personal neural network management system. Sign
-              up for "Oh What... To Do?" now!
+              We offer a contemporary solutions to an age-old problem with our
+              state-of-the-art, personalised neural network management system.
+              Sign up for "Oh What... To Do?" now!
             </p>
             <button onClick={this.signIn}>Sign In With Google</button>
           </div>
