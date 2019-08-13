@@ -67,6 +67,9 @@ class ToDoContainer extends Component {
     //add updated task to array
     this.addTask(updatedTask);
 
+    //TODO: remove following line:
+    this.fetchData();
+
     console.log(`editing task ${task} with ${updatedTask} `);
   };
 
