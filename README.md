@@ -2,7 +2,7 @@
 ### Overview
 A tech test style brief given to us on week 8 of the _nology front-end coding bootcamp. A user would be able to create and manage their own todo lists, syncing across as many devices as necessary.
 
-You can view the application live [here](http://todo.dforder.com)
+You can view the application live [here](http://todolist.dforder.com)
 
 ### The Brief
 - Use React to create an application
