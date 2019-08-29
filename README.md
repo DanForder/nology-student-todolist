@@ -16,7 +16,7 @@ A tech test style brief given to us on week 8 of the _nology front-end coding bo
 
 ### Current State
 - User can add, edit, and delete tasks
-- User can "complete" tasks
+- User can "complete" tasks, moving them to completed tasks, or "uncomplete" tasks, moving them back
 - User tasks are synced across any device they log in to via the Firebase Database
 - Hosted with Firebase on todo.dforder.com
 
